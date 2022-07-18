@@ -126,13 +126,6 @@
 import Swiper, { Scrollbar, Mousewheel } from 'swiper';
 
 export default {
-  components: {},
-  props: {},
-  data() {
-    return {};
-  },
-  computed: {},
-  created() {},
   mounted() {
     this.swiper = new Swiper(this.$refs.swiper, {
       modules: [Scrollbar, Mousewheel],
@@ -144,9 +137,7 @@ export default {
       },
       mousewheel: true
     });
-  },
-  beforeDestroy() {},
-  methods: {}
+  }
 };
 </script>
 <style scoped>

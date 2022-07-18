@@ -32,6 +32,26 @@ export default function createRouter(options) {
         component: () => import('@/views/simple/Nested.vue')
       },
       {
+        path: '/simple/grid',
+        component: () => import('@/views/simple/Grid.vue')
+      },
+      {
+        path: '/simple/dynamicPagination',
+        component: () => import('@/views/simple/DynamicPagination.vue')
+      },
+      {
+        path: '/simple/progressPagination',
+        component: () => import('@/views/simple/ProgressPagination.vue')
+      },
+      {
+        path: '/simple/customPagination',
+        component: () => import('@/views/simple/CustomPagination.vue')
+      },
+      {
+        path: '/simple/vertical',
+        component: () => import('@/views/simple/Vertical.vue')
+      },
+      {
         path: '*',
         component: NotFound
       }
