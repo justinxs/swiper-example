@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { sync } from 'vuex-router-sync';
+import 'swiper/css/bundle';
 import '@/styles/index.scss';
 import App from './App.vue';
 import createStore from './store';

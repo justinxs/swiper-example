@@ -7,7 +7,7 @@ const plugins = require('./plugins');
 const middleware = require('./middleware');
 
 global.appConfig = {
-  "cdn": '//cdn.com',
+  "cdn": '',
   "version": "1.0.0",
   "api": 'http://api.com',
   "process" :{
