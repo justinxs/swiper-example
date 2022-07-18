@@ -1,0 +1,111 @@
+@keyframes skeletonLoading {
+  0% {
+    background-position: 100% 50%;
+  }
+
+  to {
+    background-position: 0 50%;
+  }
+}
+
+.skeleton {
+  animation: skeletonLoading 2s ease-out infinite;
+  background-size: 400% 100%;
+}
+.skeleton.radius_50 {
+  border-radius: 50%;
+}
+
+.skeleton.radius_2 {
+  border-radius: pxChangeRem1080(5.76);
+}
+
+.skeleton.radius_4 {
+  border-radius: pxChangeRem1080(11.52);
+}
+
+.skeleton.radius_5 {
+  border-radius: pxChangeRem1080(14.4);
+}
+
+.skeleton.radius_6 {
+  border-radius: pxChangeRem1080(18.72);
+}
+
+.skeleton.radius_8 {
+  border-radius: pxChangeRem1080(23.04);
+}
+
+.skeleton.radius_10 {
+  border-radius: pxChangeRem1080(28.8);
+}
+
+.skeleton.radius_12_5 {
+  border-radius: pxChangeRem1080(36);
+}
+
+.skeleton.radius_20 {
+  border-radius: pxChangeRem1080(57.6);
+}
+
+.order-skeleton {
+  width: 100%;
+  padding: 0 pxChangeRem1080(23.04);
+  margin-bottom: pxChangeRem1080(23.04);
+  border-radius: pxChangeRem1080(23.04);
+  height: pxChangeRem1080(610.56);
+  box-sizing: border-box;
+  .title {
+    display: flex;
+    align-items: center;
+    height: pxChangeRem1080(115.2);
+    & > div:first-child {
+      margin-right: pxChangeRem1080(17.28);
+    }
+    .avatar {
+      width: pxChangeRem1080(57.6);
+      height: pxChangeRem1080(57.6);
+    }
+    .t-bar {
+      width: pxChangeRem1080(440.64);
+      height: pxChangeRem1080(28.8);
+    }
+  }
+  .first {
+    margin-top: pxChangeRem1080(40.32);
+    display: flex;
+    justify-content: space-between;
+    .f-bar1 {
+      width: pxChangeRem1080(440.64);
+      height: pxChangeRem1080(28.8);
+    }
+    .f-bar2 {
+      width: pxChangeRem1080(195.84);
+      height: pxChangeRem1080(28.8);
+    }
+  }
+  .info {
+    & > div {
+      margin-top: pxChangeRem1080(40.32);
+    }
+    & > div:nth-child(3) {
+      margin-top: pxChangeRem1080(48.96);
+    }
+    .i-bar1 {
+      width: pxChangeRem1080(561.6);
+      height: pxChangeRem1080(28.8);
+    }
+    .i-bar2 {
+      width: pxChangeRem1080(334.08);
+      height: pxChangeRem1080(28.8);
+    }
+    .i-bar3 {
+      width: pxChangeRem1080(936);
+      height: pxChangeRem1080(144);
+    }
+    .i-bar4 {
+      width: pxChangeRem1080(936);
+      height: pxChangeRem1080(28.8);
+    }
+  }
+}

@@ -1,0 +1,129 @@
+@mixin setBlock($block) {
+  @each $name, $val in $block {
+    #{$name}: $val;
+  }
+}
+// https://sass.bootcss.com/documentation/modules/math
+// dart-sass 特有语法，node-sass没有
+// @use "sass:math";
+
+//************************************************************
+//    @描述性的文本字号转换
+//    参数1:设计稿文字字号大小;
+//************************************************************/
+@mixin font-dpr($font-size) {
+  font-size: $font-size;
+
+  [data-dpr='2'] & {
+    font-size: $font-size * 2;
+  }
+  [data-dpr='3'] & {
+    font-size: $font-size * 3;
+  }
+}
+
+@mixin setRemScreen() {
+  $min-width: 320px 360px 375px 384px 400px 412px 414px 480px 768px 1024px;
+  $font-size: 37.5px;
+  // $fontSreen: math.div($font-size, 375px);
+  $fontSreen: $font-size / 375px;
+
+  html {
+    font-size: $font-size;
+  }
+  /*屏幕适配*/
+  @each $w in $min-width {
+    @media only screen and (min-width: $w) {
+      html {
+        font-size: $fontSreen * $w !important;
+      }
+    }
+  }
+  // 适配ipad
+  @media only screen and (min-width: 768px) {
+    html {
+      font-size: 48px !important;
+    }
+  }
+  @media only screen and (min-width: 1024px) {
+    html {
+      font-size: 48px !important;
+    }
+  }
+}
+
+// 嵌入超出文字禁止换行隐藏变成省略号
+@mixin line-ellipsis() {
+  white-space: nowrap; /*是禁止换行；*/
+  overflow: hidden; /*多出的内容隐藏；*/
+  text-overflow: ellipsis; /*多出的内容以省略号...来表达；主要用于IE等浏览器*/
+  /*! autoprefixer: ignore next */
+  -o-text-overflow: ellipsis; /*支持chrome；*/
+}
+
+@mixin multi-line-ellipsis($num) {
+  word-break: break-all;
+  /*! autoprefixer: ignore next */
+  display: -webkit-box;
+  /*! autoprefixer: ignore next */
+  display: -o-box;
+  /*! autoprefixer: ignore next */
+  display: -moz-box;
+  /*! autoprefixer: ignore next */
+  display: box;
+  /*! autoprefixer: ignore next */
+  -webkit-line-clamp: $num;
+  /*! autoprefixer: ignore next */
+  -moz-line-clamp: $num;
+  /*! autoprefixer: ignore next */
+  -o-line-clamp: $num;
+  /*! autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+  /*! autoprefixer: ignore next */
+  -moz-box-orient: vertical;
+  /*! autoprefixer: ignore next */
+  -o-box-orient: vertical;
+  overflow: hidden;
+}
+
+@mixin placeHolderColor($color) {
+  &::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: $color;
+  }
+
+  &:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: $color;
+  }
+
+  &::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: $color;
+  }
+
+  &:-ms-input-placeholder {
+    /* Internet Explorer 10+ */
+    color: $color;
+  }
+}
+
+/* 设置无颜色 border */
+@mixin borderNoColor($w, $p: all, $s: solid) {
+  @if $p == top {
+    border-top-width: $w;
+    border-top-style: $s;
+  } @else if $p == bottom {
+    border-bottom-width: $w;
+    border-bottom-style: $s;
+  } @else if $p == left {
+    border-left-width: $w;
+    border-left-style: $s;
+  } @else if $p == right {
+    border-right-width: $w;
+    border-right-style: $s;
+  } @else {
+    border-width: $w;
+    border-style: $s;
+  }
+}

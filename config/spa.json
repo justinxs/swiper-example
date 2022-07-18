@@ -1,0 +1,8 @@
+{
+  "api": {
+    "dev": "/",
+    "fat": "http://ccweb-sports.nn722.com",
+    "beta": "http://ccweb-sports.1391dh.com",
+    "prod": "https://ccweb-sports.591dyd.com"
+  }
+}

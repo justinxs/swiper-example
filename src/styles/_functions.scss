@@ -1,0 +1,21 @@
+// https://sass.bootcss.com/documentation/modules/math
+// dart-sass 特有语法，node-sass没有
+// @use "sass:math";
+
+//************************************************************
+//    @除以2函数
+//************************************************************/
+@function pxChangeRem($parameter) {
+	// @return math.div($parameter, 75) * 1rem;
+	@return $parameter / 75 * 1rem;
+}
+
+@function pxChangeRem2($parameter) {
+	// @return math.div($parameter, 64) * 1rem;
+	@return $parameter / 64 * 1rem;
+}
+
+@function pxChangeRem1080($parameter) {
+	// @return math.div($parameter, 108) * 1rem;
+	@return $parameter / 108 * 1rem;
+}

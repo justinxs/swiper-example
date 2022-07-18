@@ -1,0 +1,37 @@
+$body_bg: #121212;
+$content_bg: #242424;
+$body_color: #b8b8b8;
+$primary_color: #ffb001;
+$primary_weak_color: #fff4dc;
+$attention_color: #ff2a2a;
+$success_color: #66a754;
+
+$main_font_color: #a0a0a0;
+$heavy_font_color: #e7e7e7;
+$focus_font_color: #ea5a5a;
+$focus_weak_font_color: #707070;
+$second_font_color: #b8b8b8;
+$third_font_color: #707070;
+$fourth_font_color: #707070;
+$weak_font_color: #999999;
+$label_font_color: #707070;
+$win_font_color: #ff2a2a;
+
+$off_bg: rgba(255, 255, 255, 0.2);
+$label_bg: hsla(0, 0%, 100%, 0.05);
+$card_bg: hsla(0, 0%, 100%, 0.05);
+$card_focus_bg: #f6f9fc;
+$key_bg: rgba(255, 255, 255, 0.05);
+$toast_bg: #414655;
+
+$border_color: hsla(0, 0%, 100%, 0.03);
+$border_primary_color: $primary_color;
+$border_input_color: #ffb001;
+$border_icon_color: #bcbcbe;
+
+$skeleton_linear_bg: linear-gradient(
+  90deg,
+  #2f2f2f 25%,
+  #242424 37%,
+  #2f2f2f 63%
+);

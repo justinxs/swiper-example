@@ -1,0 +1,9 @@
+{
+  "test": {
+    "en-US": "test",
+    "vi-VN": "test",
+    "th-TH": "test",
+    "zh-CN": "测试",
+    "zh-TW": "测试"
+  }
+}

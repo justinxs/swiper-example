@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Cache-Control" content="no-transform" />
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<meta name="applicable-device" content="mobile">
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="format-detection" content="email=no" />
+		<meta name="renderer" content="webkit">
+		<meta name="HandheldFriendly" content="true">
+		<meta name="msapplication-tap-highlight" content="no">
+		<meta name="screen-orientation" content="portrait">
+		<meta name="full-screen" content="yes">
+		<meta name="x5-fullscreen" content="true">
+		<meta name="browsermode" content="application">
+		<meta name="x5-page-mode" content="default">
+    {{{ meta }}}
+    {{{ renderResourceHints().replace(/href="/g, `href="${cdn}`) }}}
+		{{{ renderStyles().replace(/href="/g, `href="${cdn}`) }}}
+    {{{ link }}}
+    <title>{{ title }}</title>
+</head>
+<body>
+    <!--vue-ssr-outlet-->
+    {{{ value }}}
+    {{{ renderState() }}}
+    {{{ script }}}
+    {{{ renderScripts().replace(/src="/g, `src="${cdn}`) }}}
+</body>
+</html>

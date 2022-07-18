@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./exceljs.min.js"></script>
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        border: 0;
+      }
+      thead {
+        background: #ccc;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        text-align: center;
+        padding: 6px;
+      }
+      .btns {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 0;
+      }
+      .btn {
+        padding: 10px;
+        background-color: skyblue;
+        cursor: pointer;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <input
+      style="display: none"
+      type="file"
+      name="upload"
+      id="upload"
+      accept=".json,.xls,.xlsx"
+    />
+    <div class="btns">
+      <div class="btn in">导入文件</div>
+      <div class="btn out-json">导出JSON</div>
+      <div class="btn out-excel">导出excel</div>
+    </div>
+    <div class="data-view" id="view">
+      <table>
+        <thead>
+          <tr>
+            <th>key</th>
+            <th>en-US</th>
+            <th>vi-VN</th>
+            <th>th-TH</th>
+            <th>zh-CN</th>
+            <th>zh-TW</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1-5</td>
+            <td>1-5</td>
+            <td>1-5</td>
+            <td>1-5</td>
+            <td>1-5名</td>
+            <td>1-5名</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <script>
+      const TYPE_REGEXP = /^\[object (\S+)\]$/;
+      const upload = document.getElementById('upload');
+      const btns = document.querySelector('.btns');
+      const view = document.getElementById('view');
+      function getDataType(data, isLower = true) {
+        let matches,
+          type = Object.prototype.toString.call(data);
+        if ((matches = TYPE_REGEXP.exec(type))) {
+          type = matches[1] === 'Number' && isNaN(data) ? 'NaN' : matches[1];
+        }
+
+        return isLower ? type.toLowerCase() : type;
+      }
+      function toBlob(file, mimeType) {
+        let dataType = getDataType(file);
+        let blobData = null;
+        switch (dataType) {
+          case 'file':
+          case 'blob':
+            blobData = file;
+            break;
+          case 'uint8array':
+          case 'uint16array':
+          case 'uint32array':
+          case 'arraybuffer':
+          case 'string':
+            blobData = new Blob([file], { type: mimeType });
+            break;
+          default:
+            break;
+        }
+
+        return blobData;
+      }
+
+      const initWorkbook = () => {
+        const workbook = new ExcelJS.Workbook();
+        workbook.creator = 'LT';
+        workbook.lastModifiedBy = 'LT';
+        workbook.created = new Date();
+        workbook.modified = new Date();
+        workbook.lastPrinted = new Date();
+        workbook.views = [
+          {
+            x: 0,
+            y: 0,
+            width: 10000,
+            height: 20000,
+            firstSheet: 0,
+            activeTab: 1,
+            visibility: 'visible'
+          }
+        ];
+        return workbook;
+      };
+
+      async function readExcel(bufferData) {
+        try {
+          let type = 'default',
+            header = [],
+            data = [],
+            rowData = [],
+            colData = [],
+            headerIndex,
+            existRowCount = 0,
+            rowCount,
+            columnCount,
+            actualColumnCount,
+            actualRowCount,
+            worksheetIndex = 0,
+            worksheet = null;
+
+          const workbook = new ExcelJS.Workbook();
+          await workbook.xlsx.load(bufferData);
+
+          //  默认取第一个worksheet
+          workbook.eachSheet(function (ws, sId) {
+            if (worksheetIndex == 0) {
+              worksheet = ws;
+            }
+            worksheetIndex++;
+          });
+
+          rowCount = worksheet.rowCount;
+          columnCount = worksheet.columnCount;
+          actualColumnCount = worksheet.actualColumnCount;
+          actualRowCount = worksheet.actualRowCount;
+
+          worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
+            let rowSize = row.cellCount,
+              rowExistSize = row.actualCellCount;
+            rowData.push({
+              rowNumber,
+              values: [],
+              types: []
+            });
+            //  不空行
+            if (rowExistSize > 0) {
+              headerIndex = headerIndex === undefined ? rowNumber : headerIndex;
+              existRowCount++;
+            }
+
+            row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
+              // cell.type单元格类型：
+              // Null: 0,
+              // Merge: 1,
+              // Number: 2,
+              // String: 3,
+              // Date: 4,
+              // Hyperlink: 5,
+              // Formula: 6,
+              // SharedString: 7,
+              // RichText: 8,
+              // Boolean: 9,
+              // Error: 10,
+              let value = cell.value,
+                ceilType = cell.type;
+
+              rowData[rowData.length - 1].values.push(value);
+              rowData[rowData.length - 1].types.push(ceilType);
+              if (colData[colNumber - 1]) {
+                colData[colNumber - 1].values.push(value);
+                colData[colNumber - 1].types.push(ceilType);
+              } else {
+                colData.push({
+                  colNumber,
+                  values: [value],
+                  types: [ceilType]
+                });
+              }
+              if (rowExistSize > 0) {
+                if (rowNumber == headerIndex) {
+                  header.push({
+                    colNumber,
+                    originalVal: value,
+                    value:
+                      typeof value === 'object'
+                        ? 'text' in value && value.text
+                          ? value.text
+                          : 'col' + rowNumber
+                        : value,
+                    rowNumber,
+                    type: ceilType,
+                    types: []
+                  });
+                } else {
+                  let item =
+                    data[existRowCount - 2] ||
+                    (data.push({}) && data[existRowCount - 2]);
+                  let keyObj = header.filter(
+                    (h) => h.colNumber == colNumber
+                  )[0];
+                  if (keyObj) {
+                    item[keyObj.value] = value;
+                    keyObj.types.push(ceilType);
+                  }
+                }
+              }
+            });
+
+            //  若最后一列单元格是空，则列数会-1
+            if (rowSize < columnCount) {
+              let finalRow = rowData[rowData.length - 1];
+              let finalData = data[data.length - 1];
+              //  列中空单元格处理
+              let lessCols = colData.filter(
+                (cd) => cd.values.length < rowNumber
+              );
+
+              lessCols.length > 0 &&
+                lessCols.forEach((cd) => {
+                  cd.values.push('');
+                  cd.types.push(0);
+                });
+              //  行 空单元格处理
+              if (finalRow.values.length < columnCount) {
+                finalRow.values = finalRow.values.concat(
+                  Array.from(
+                    {
+                      length: columnCount - finalRow.values.length
+                    },
+                    (v, i) => ''
+                  )
+                );
+                finalRow.types = finalRow.types.concat(
+                  Array.from(
+                    {
+                      length: columnCount - finalRow.values.length
+                    },
+                    (v, i) => 0
+                  )
+                );
+              }
+              //  header 空单元格处理
+              if (rowNumber == headerIndex && header.length < columnCount) {
+                let len = header.length;
+                header = header.concat(
+                  Array.from(
+                    {
+                      length: columnCount - len
+                    },
+                    (v, i) => {
+                      let colNumber = i + 1 + len;
+                      return {
+                        colNumber,
+                        value: 'col' + colNumber,
+                        rowNumber,
+                        type: 0,
+                        types: []
+                      };
+                    }
+                  )
+                );
+              }
+              //  data 空单元格处理
+              if (
+                finalData &&
+                header.length > 0 &&
+                Object.keys(finalData).length < header.length
+              ) {
+                header.forEach((h) => {
+                  let key = h.value;
+                  if (!finalData.hasOwnProperty(key)) {
+                    finalData[key] = '';
+                    h.types.push(0);
+                  }
+                });
+              }
+            }
+          });
+
+          if (type === 'col') {
+            return {
+              data: colData,
+              rowCount,
+              columnCount,
+              actualColumnCount,
+              actualRowCount
+            };
+          } else if (type === 'row') {
+            return {
+              data: rowData,
+              rowCount,
+              columnCount,
+              actualColumnCount,
+              actualRowCount
+            };
+          } else {
+            return {
+              header,
+              data,
+              rowCount,
+              columnCount,
+              actualColumnCount,
+              actualRowCount
+            };
+          }
+        } catch (error) {
+          return Promise.reject(error);
+        }
+      }
+
+      async function downloadFile({ file, mimeType, fileName }) {
+        let blobData = toBlob(file, mimeType);
+        if (navigator.msSaveBlob) {
+          navigator.msSaveBlob(blobData, fileName);
+        } else {
+          let dataURL = URL.createObjectURL(blobData),
+            save_link = document.createElementNS(
+              'http://www.w3.org/1999/xhtml',
+              'a'
+            ),
+            event = document.createEvent('MouseEvents');
+
+          save_link.href = dataURL;
+          save_link.download = fileName;
+          event.initMouseEvent(
+            'click',
+            true,
+            false,
+            window,
+            0,
+            0,
+            0,
+            0,
+            0,
+            false,
+            false,
+            false,
+            false,
+            0,
+            null
+          );
+          save_link.dispatchEvent(event);
+          URL.revokeObjectURL(dataURL);
+          save_link = null;
+        }
+      }
+      let sourceData = null;
+
+      function downloadJSON() {
+        downloadFile({
+          file: JSON.stringify(sourceData),
+          mimeType: 'application/json',
+          fileName: 'model.json'
+        });
+      }
+
+      async function downloadExcel() {
+        const workbook = initWorkbook();
+        const worksheet = workbook.addWorksheet('Sheet1');
+
+        const header = ['key'];
+        const body = [];
+        Object.keys(sourceData).forEach((key) => {
+          const item = sourceData[key];
+          Object.keys(item).forEach((iKey) => {
+            !header.includes(iKey) && header.push(iKey);
+          });
+          body.push({
+            key,
+            ...item
+          });
+        });
+
+        if (header && header.length) {
+          const columns = header.map((key) => ({
+            key,
+            header: key,
+            width: 40
+          }));
+          worksheet.state = 'visible';
+          worksheet.columns = columns;
+          for (let i = 1; i <= columns.length; i++) {
+            worksheet.getColumn(i).alignment = {
+              vertical: 'middle',
+              horizontal: 'center'
+            };
+            worksheet.getColumn(i).font = { name: 'Arial Unicode MS' };
+          }
+          // 设置表头
+          worksheet.getRow(1).font = {
+            name: 'Arial Unicode MS',
+            family: 4,
+            size: 13
+          };
+          worksheet.getRow(1).fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'cccccc' }
+          };
+        }
+        console.log(header, body);
+        worksheet.addRows(body);
+        // office2007文件mimetype对照表
+        // https://docs.microsoft.com/en-us/archive/blogs/vsofficedeveloper/office-2007-file-format-mime-types-for-http-content-streaming-2
+        const buffer = await workbook.xlsx.writeBuffer();
+        downloadFile({
+          file: buffer,
+          mimeType:
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          fileName: 'model.xlsx'
+        });
+      }
+
+      btns.addEventListener('click', (e) => {
+        const target = e.target;
+        if (target.classList.contains('in')) {
+          upload.click();
+        } else if (target.classList.contains('out-json')) {
+          downloadJSON();
+        } else if (target.classList.contains('out-excel')) {
+          downloadExcel();
+        }
+      });
+
+      const drawData = (data) => {
+        const header = ['key'];
+        const body = [];
+        const table = document.createElement('table');
+        const thead = document.createElement('thead');
+        const tbody = document.createElement('tbody');
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        Object.keys(data).forEach((key) => {
+          const item = data[key];
+          Object.keys(item).forEach((iKey) => {
+            !header.includes(iKey) && header.push(iKey);
+          });
+          body.push({
+            key,
+            ...item
+          });
+        });
+
+        const theadTr = document.createElement('tr');
+        header.forEach((hKey) => {
+          const th = document.createElement('th');
+          th.innerText = hKey;
+          theadTr.appendChild(th);
+        });
+        thead.appendChild(theadTr);
+
+        body.forEach((item) => {
+          const tr = document.createElement('tr');
+          header.forEach((iKey) => {
+            const td = document.createElement('td');
+            td.innerText = item[iKey];
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+
+        const childs = [...view.childNodes];
+        for (let i = 0; i < childs.length; i++) {
+          view.removeChild(childs[i]);
+        }
+        view.appendChild(table);
+      };
+
+      // 本地文件上传
+      upload.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        if (file.type === 'application/json') {
+          reader.onload = function (evt) {
+            sourceData = JSON.parse(evt.target.result);
+            drawData(sourceData);
+          };
+          reader.readAsText(file);
+        } else if (/\.xlsx?$/.test(file.name)) {
+          reader.onload = function (evt) {
+            const bufferData = evt.target.result;
+            readExcel(bufferData).then((res) => {
+              console.log(res);
+              sourceData = res.data.reduce((data, item) => {
+                if (item.key) {
+                  data[item.key] = Object.keys(item).reduce((resItem, k) => {
+                    if (k !== 'key') {
+                      resItem[k] =
+                        item[k] !== null && item[k] !== undefined
+                          ? item[k]
+                          : '';
+                    }
+                    return resItem;
+                  }, {});
+                }
+                return data;
+              }, {});
+              drawData(sourceData);
+            });
+          };
+          reader.readAsArrayBuffer(file);
+        }
+
+        e.target.value = null;
+      });
+    </script>
+  </body>
+</html>

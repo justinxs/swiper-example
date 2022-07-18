@@ -1,0 +1,7 @@
+.vscode
+public/
+dist/
+dist_spa/
+logs/
+node_modules
+src/assets/

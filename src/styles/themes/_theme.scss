@@ -1,0 +1,78 @@
+body {
+  background-color: transparent;
+  color: $body_color;
+}
+
+.base-bg {
+  background-color: $body_bg !important;
+}
+.c-bg {
+  background-color: $content_bg !important;
+}
+.card-bg {
+  background-color: $card_bg !important;
+}
+.primary-bg {
+  background-color: $primary_color !important;
+}
+
+.base-fc {
+  color: $body_color !important;
+}
+.main-fc {
+  color: $main_font_color !important;
+}
+.primary-fc {
+  color: $primary_color !important;
+}
+.w-fc {
+  color: $weak_font_color !important;
+}
+.heavy-fc {
+  color: $heavy_font_color !important;
+}
+.second-fc {
+  color: $second_font_color !important;
+}
+.third-fc {
+  color: $third_font_color !important;
+}
+.fourth-fc {
+  color: $fourth_font_color !important;
+}
+.success-fc {
+  color: $success_color !important;
+}
+.win-fc {
+  color: $win_font_color !important;
+}
+
+.border-c {
+  border-color: $border_color !important;
+}
+.border-icon-c {
+  border-color: $border_icon_color !important;
+}
+.border-t-icon-c {
+  border-top-color: $border_icon_color !important;
+}
+.border-b-icon-c {
+  border-bottom-color: $border_icon_color !important;
+}
+.border-l-icon-c {
+  border-left-color: $border_icon_color !important;
+}
+.border-r-icon-c {
+  border-right-color: $border_icon_color !important;
+}
+
+.primary-loading {
+  color: $primary_color !important;
+}
+
+.skeleton {
+  background-image: $skeleton_linear_bg !important;
+}
+.van-toast {
+  background-color: $toast_bg !important;
+}

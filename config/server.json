@@ -1,0 +1,7 @@
+{
+  "host": "0.0.0.0",
+  "port": 6650,
+  "inspectPort": 6651,
+  "analyzerPort": 6652,
+  "spaPort": 6653
+}
