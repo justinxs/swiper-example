@@ -16,8 +16,36 @@ export default function createRouter(options) {
         component: Home
       },
       {
+        path: '/effect/Creative',
+        component: () => import('@/views/effective/Creative.vue')
+      },
+      {
+        path: '/effect/Cards',
+        component: () => import('@/views/effective/Cards.vue')
+      },
+      {
+        path: '/effect/Flip',
+        component: () => import('@/views/effective/Flip.vue')
+      },
+      {
+        path: '/effect/Coverflow',
+        component: () => import('@/views/effective/Coverflow.vue')
+      },
+      {
+        path: '/effect/Cube',
+        component: () => import('@/views/effective/Cube.vue')
+      },
+      {
+        path: '/effect/Fade',
+        component: () => import('@/views/effective/Fade.vue')
+      },
+      {
         path: '/effect/SlicerSlider',
         component: () => import('@/views/effective/SlicerSlider.vue')
+      },
+      {
+        path: '/effect/TravelSlider',
+        component: () => import('@/views/effective/TravelSlider.vue')
       },
       {
         path: '/simple/navigation',
@@ -90,6 +118,10 @@ export default function createRouter(options) {
       {
         path: '/simple/Parallax',
         component: () => import('@/views/simple/Parallax.vue')
+      },
+      {
+        path: '/simple/ThumbsGallery',
+        component: () => import('@/views/simple/ThumbsGallery.vue')
       },
       {
         path: '*',
