@@ -62,7 +62,7 @@ const mergeContext = (ctx, options) => {
   const env = process.env.NODE_ENV;
   const cdn = global.appConfig.cdn;
   const theme = ctx.theme;
-  const isDebug = process.env.VERSION !== 'release';
+  const isDebug = false;
   const context = Object.assign(
     {
       title: appName,

@@ -4,12 +4,19 @@
       <!-- Rotating Planet -->
       <div class="travel-slider-planet">
         <img src="~@images/travel/earth.svg" />
-        <div class="travel-slider-cities">
+        <div
+          class="travel-slider-cities"
+          :class="[
+            slides.length > 4
+              ? 'travel-slider-cities-8'
+              : 'travel-slider-cities-4'
+          ]"
+        >
           <img :src="s.logo" v-for="(s, i) in slides" :key="i" />
         </div>
       </div>
       <!-- Swiper -->
-      <div class="swiper" ref="swiper">
+      <div class="swiper transparent" ref="swiper">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(s, i) in slides" :key="i">
             <img :src="s.img" class="travel-slider-bg-image" />
@@ -86,13 +93,7 @@ export default {
   computed: {},
   created() {},
   mounted() {
-    const planet = document.querySelector('.travel-slider-planet'),
-      cities = document.querySelector('.travel-slider-cities'),
-      slides = document.querySelectorAll('.swiper-slide');
-    cities &&
-      cities.classList.add(
-        'travel-slider-cities-' + (slides.length > 4 ? '8' : '4')
-      );
+    const planet = document.querySelector('.travel-slider-planet');
     this.swiper = new Swiper(this.$refs.swiper, {
       modules: [Keyboard, Mousewheel],
       speed: 600,
@@ -123,6 +124,7 @@ export default {
         }
       }
     });
+    this.$refs.swiper.classList.remove('transparent');
   },
   beforeDestroy() {},
   methods: {}
