@@ -48,6 +48,10 @@ export default function createRouter(options) {
         component: () => import('@/views/effective/TravelSlider.vue')
       },
       {
+        path: '/effect/Slicer3D',
+        component: () => import('@/views/effective/Slicer3D.vue')
+      },
+      {
         path: '/simple/navigation',
         component: () => import('@/views/simple/Navigation.vue')
       },

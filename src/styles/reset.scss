@@ -46,14 +46,6 @@ input,
 textarea,
 select,
 button,
-iframe {
-  border: 1px solid gray;
-}
-
-input,
-textarea,
-select,
-button,
 div[contenteditable='true'] {
   outline: none;
 }
@@ -108,6 +100,9 @@ img,
 iframe {
   /*IE下img标签被a标签嵌套时，img标签就会有边框*/
   border: 0;
+}
+iframe {
+  vertical-align: top;
 }
 
 a img,
