@@ -52,6 +52,30 @@ export default function createRouter(options) {
         component: () => import('@/views/effective/Slicer3D.vue')
       },
       {
+        path: '/effect/Pagination3D',
+        component: () => import('@/views/effective/Pagination3D.vue')
+      },
+      {
+        path: '/effect/OnBoarding',
+        component: () => import('@/views/effective/OnBoarding.vue')
+      },
+      {
+        path: '/effect/PostersSlider',
+        component: () => import('@/views/effective/PostersSlider.vue')
+      },
+      {
+        path: '/effect/ExpendingCollection',
+        component: () => import('@/views/effective/ExpendingCollection.vue')
+      },
+      {
+        path: '/effect/TripleSlider',
+        component: () => import('@/views/effective/TripleSlider.vue')
+      },
+      {
+        path: '/effect/PanoramaSlider',
+        component: () => import('@/views/effective/PanoramaSlider.vue')
+      },
+      {
         path: '/simple/navigation',
         component: () => import('@/views/simple/Navigation.vue')
       },

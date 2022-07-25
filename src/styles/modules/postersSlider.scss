@@ -1,0 +1,48 @@
+:root {
+  --posters-slider-shadow-bg-color: #000;
+  --posters-slider-width: 265px;
+  --posters-slider-height: 392px;
+}
+
+.posters-slider {
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  .swiper {
+    overflow: visible;
+    width: var(--posters-slider-width);
+    height: var(--posters-slider-height);
+  }
+  .swiper-slide {
+    border-radius: 10px;
+    justify-content: center;
+    display: flex;
+  }
+  .swiper-slide-shadow {
+    background: var(--posters-slider-shadow-bg-color);
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+@media (orientation: portrait) {
+  .posters-slider {
+    --posters-slider-width: 68vw;
+    --posters-slider-height: calc(68vw * 1.48);
+  }
+}
+
+@media (orientation: landscape) {
+  .posters-slider {
+    --posters-slider-width: calc(80vh / 1.48);
+    --posters-slider-height: 80vh;
+  }
+}
