@@ -1,7 +1,18 @@
 <template>
-  <div class="swiper-app"></div>
+  <div class="swiper-app">
+    <div v-for="g in groups" :key="g.key">
+      <h3>{{ g.title }}</h3>
+      <ul style="display: flex; flex-wrap: wrap">
+        <li v-for="c in g.children" :key="c.path" style="padding: 10px;background-color: skyblue;margin: 10px;">
+          <RouterLink :to="c.path">{{ c.text }}</RouterLink>
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 <script>
+import routes from '@/routes/routes';
+
 export default {
   name: 'SwiperHome',
   /**
@@ -14,6 +25,35 @@ export default {
    */
   asyncData({ store, route, routeData }) {
     return Promise.resolve();
+  },
+  data() {
+    return {
+      groups: routes.reduce((g, r) => {
+        const key = r.path.replace(/^\/(.+)?\/.*/, '$1');
+        const existItem = g.filter((gItem) => gItem.key === key)[0];
+        if (existItem) {
+          existItem.children.push({
+            path: r.path,
+            text: r.path.replace(/^\/(.+)?\/(.+)$/, '$2')
+          });
+        } else {
+          g.push({
+            key: key,
+            title: key
+              .split('')
+              .map((k, i) => (i ? k : k.toUpperCase()))
+              .join(''),
+            children: [
+              {
+                path: r.path,
+                text: r.path.replace(/^\/(.+)?\/(.+)$/, '$2')
+              }
+            ]
+          });
+        }
+        return g;
+      }, [])
+    };
   }
 };
 </script>

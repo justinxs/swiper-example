@@ -35,6 +35,7 @@ export default {
   watch: {
     $route: {
       handler(to, from) {
+        return;
         // 首屏无需切换动画
         if (!this.isFirstLoad) {
           this.isFirstLoad = to.path === this.firstLoadPath || !!from;
