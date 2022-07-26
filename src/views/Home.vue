@@ -2,8 +2,8 @@
   <div class="swiper-app">
     <div v-for="g in groups" :key="g.key">
       <h3>{{ g.title }}</h3>
-      <ul style="display: flex; flex-wrap: wrap">
-        <li v-for="c in g.children" :key="c.path" style="padding: 10px;background-color: skyblue;margin: 10px;">
+      <ul class="route-list">
+        <li class="route-item" v-for="c in g.children" :key="c.path">
           <RouterLink :to="c.path">{{ c.text }}</RouterLink>
         </li>
       </ul>
@@ -29,12 +29,14 @@ export default {
   data() {
     return {
       groups: routes.reduce((g, r) => {
-        const key = r.path.replace(/^\/(.+)?\/.*/, '$1');
+        const [key, text] = r.path
+          .replace(/^\/(.+)?\/(.+)$/, '$1,$2')
+          .split(',');
         const existItem = g.filter((gItem) => gItem.key === key)[0];
         if (existItem) {
           existItem.children.push({
             path: r.path,
-            text: r.path.replace(/^\/(.+)?\/(.+)$/, '$2')
+            text
           });
         } else {
           g.push({
@@ -46,7 +48,7 @@ export default {
             children: [
               {
                 path: r.path,
-                text: r.path.replace(/^\/(.+)?\/(.+)$/, '$2')
+                text
               }
             ]
           });
@@ -57,3 +59,15 @@ export default {
   }
 };
 </script>
+<style scoped lang="scss">
+.route-list {
+  display: flex;
+  flex-wrap: wrap;
+  .route-item {
+    padding: 10px;
+    background-color: skyblue;
+    margin: 5px;
+    font-size: 18px;
+  }
+}
+</style>

@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <transition :name="transitionName">
+    <!-- <transition :name="transitionName"> -->
       <router-view />
-    </transition>
+    <!-- </transition> -->
     <div v-show="loading" class="loading-view">
       <van-loading class="primary-loading" size="1.2rem" />
     </div>
