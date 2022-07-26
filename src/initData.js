@@ -8,7 +8,6 @@ function getCookie(key) {
   return document.cookie.replace(reg, '$1');
 }
 
-
 export function initEnterData(enterData) {
   let version = enterData.version || getCookie('SPORTS_VERSION') || '';
   let UUID = enterData.uuid || getCookie('SPORTS_UUID') || uuid();
@@ -35,14 +34,7 @@ export function initEnterData(enterData) {
 }
 
 export function initQueryData() {
-  let [
-    version,
-    UUID,
-    langCode,
-    token,
-    theme,
-    api
-  ] = getQueryString([
+  let [version, UUID, langCode, token, theme, api] = getQueryString([
     'version',
     'uuid',
     'langCode',

@@ -40,17 +40,7 @@ const packageLang = async (isWatch) => {
     });
 
     if (isWatch) {
-      const watcher = fsPromises.watch(MODEL_PATH);
-      for await (const { eventType, filename } of watcher) {
-        console.log(
-          `language watch event emit! [eventType: ${eventType}][filename: ${filename}]`
-        );
-        timerID && clearTimeout(timerID);
-        timerID = setTimeout(() => {
-          delete require.cache[require.resolve(MODEL_PATH)];
-          packageLang();
-        }, UPDATE_TIME);
-      }
+      watchLang();
     }
 
     return writePromises;
@@ -58,5 +48,19 @@ const packageLang = async (isWatch) => {
     console.error('language package error', error);
   }
 };
+
+async function watchLang() {
+  const watcher = fsPromises.watch(MODEL_PATH);
+  for await (const { eventType, filename } of watcher) {
+    console.log(
+      `language watch event emit! [eventType: ${eventType}][filename: ${filename}]`
+    );
+    timerID && clearTimeout(timerID);
+    timerID = setTimeout(() => {
+      delete require.cache[require.resolve(MODEL_PATH)];
+      packageLang();
+    }, UPDATE_TIME);
+  }
+}
 
 module.exports = packageLang;

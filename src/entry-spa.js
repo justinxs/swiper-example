@@ -10,15 +10,7 @@ const envApi = process.env.API || 'prod';
 const apiMap = spaConfig.api;
 
 function start(initData = {}) {
-  let {
-    version,
-    uuid,
-    langCode,
-    token,
-    api,
-    ua,
-    theme
-  } = initData;
+  let { version, uuid, langCode, token, api, ua, theme } = initData;
   const baseURL = /^https?:\/\/.+/i.test(api) ? api : apiMap[envApi];
   const CDN = baseURL.replace(/\/$/, '') + '/';
 
