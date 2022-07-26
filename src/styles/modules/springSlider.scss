@@ -1,0 +1,32 @@
+.spring-slider {
+  --swiper-navigation-color: #803205;
+  --swiper-pagination-color: #803205;
+  --swiper-pagination-bullet-inactive-color: #803205;
+  width: 100%;
+  height: 320px;
+  position: relative;
+}
+
+.spring-slider .swiper-pagination {
+  bottom: 0;
+  margin-bottom: -32px;
+}
+
+.spring-slider .swiper {
+  height: 100%;
+  width: 100%;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.spring-slider .swiper-slide {
+  box-sizing: border-box;
+  padding: 0 24px;
+}
+
+.spring-slider .swiper-slide img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}

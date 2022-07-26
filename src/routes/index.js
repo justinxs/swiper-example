@@ -76,6 +76,18 @@ export default function createRouter(options) {
         component: () => import('@/views/effective/PanoramaSlider.vue')
       },
       {
+        path: '/effect/FashionSlider',
+        component: () => import('@/views/effective/FashionSlider.vue')
+      },
+      {
+        path: '/effect/SpringSlider',
+        component: () => import('@/views/effective/SpringSlider.vue')
+      },
+      {
+        path: '/effect/CarouselSlider',
+        component: () => import('@/views/effective/CarouselSlider.vue')
+      },
+      {
         path: '/simple/navigation',
         component: () => import('@/views/simple/Navigation.vue')
       },
